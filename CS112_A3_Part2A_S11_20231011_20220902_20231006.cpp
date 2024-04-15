@@ -5,7 +5,7 @@
 
 
 // توزيع المهام :
-// 20231011( 3 , 6 , 9 , 12 ) 
+// 20231011( 3 , 6 , 12 ) 
 // 20231006 ( 2 , 5 , 8 , 11)
 // 20220902 (main code , 1 ,4 , 7 , 10 , 16 )
 
@@ -14,6 +14,8 @@
 //20231011:ahmedawwad646@gmail.com.
 //20231006:besherahmed068@gmail.com
 //20220902:ksaai1818@gmail.com.
+
+//GitHub Repo: https://github.com/REVA82/A  <==========>   https://github.com/REVA82/A/blob/main/CS112_A3_Part2A_S11_20231011_20220902_20231006.cpp
 
 #include "Image_Class.h"
 #include <iostream>
@@ -241,48 +243,48 @@ void applyPurpleNightFilter(Image& img) {
 
 
 void RotateFilter(unsigned char* imageData, int width, int height, int channels) {
-    // Check if the image dimensions are compatible with a 90-degree rotation
+    
     if (width <= 0 || height <= 0 || channels <= 0) {
         std::cerr << "Error: Invalid image dimensions or channels.\n";
         return;
     }
 
-    // Create a temporary buffer to store the rotated image data
+    
     unsigned char* rotatedImageData = new unsigned char[width * height * channels];
 
-    // Perform a 90-degree clockwise rotation
+    
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             int sourceIndex = (y * width + x) * channels;
-            int targetIndex = ((width - 1 - x) * height + y) * channels; // Rotate clockwise
+            int targetIndex = ((width - 1 - x) * height + y) * channels; 
             for (int c = 0; c < channels; ++c) {
                 rotatedImageData[targetIndex + c] = imageData[sourceIndex + c];
             }
         }
     }
 
-    // Copy the rotated image data back to the original image buffer
+   
     std::copy(rotatedImageData, rotatedImageData + width * height * channels, imageData);
 
-    // Free the temporary buffer
+    
     delete[] rotatedImageData;
 
     std::cout << "Image rotated 90 degrees clockwise.\n";
 }
 
-// BlurFilter function to apply a simple blur effect to the image
+
 void BlurFilter(unsigned char* imageData, int width, int height, int channels) {
-    // Create a temporary buffer to hold blurred image data
+    
     unsigned char* blurredImageData = new unsigned char[width * height * channels];
 
-    // Define the blur kernel
+    
     float kernel[3][3] = {
         {1.0f / 9, 1.0f / 9, 1.0f / 9},
         {1.0f / 9, 1.0f / 9, 1.0f / 9},
         {1.0f / 9, 1.0f / 9, 1.0f / 9}
     };
 
-    // Apply blur operation
+   
     for (int x = 1; x < width - 1; ++x) {
         for (int y = 1; y < height - 1; ++y) {
             for (int k = 0; k < channels; ++k) { // for each color channel (R, G, B)
@@ -298,54 +300,54 @@ void BlurFilter(unsigned char* imageData, int width, int height, int channels) {
         }
     }
 
-    // Copy blurred image data back to the original buffer
+    
     memcpy(imageData, blurredImageData, width * height * channels);
 
-    // Free the temporary buffer
+    
     delete[] blurredImageData;
 
     cout << "Image blurred successfully.\n";
 }
 
 
-// Function to crop the image
+
 void cropImage(Image& img, int x, int y, int width, int height) {
-    // Check if the specified crop area is within the bounds of the original image
+    
     if (x < 0 || y < 0 || width <= 0 || height <= 0 || x + width > img.width || y + height > img.height) {
         cerr << "Error: Invalid crop dimensions. Please ensure the crop area is within the image boundaries.\n";
         return;
     }
 
-    // Calculate the number of channels in the image
+    
     int channels = img.channels;
 
-    // Calculate the size of the cropped image
+    
     int croppedWidth = width;
     int croppedHeight = height;
 
-    // Create a new Image object to store the cropped image
+    
     Image croppedImage(croppedWidth, croppedHeight);
 
-    // Copy the pixels from the original image to the cropped image
+    
     for (int j = 0; j < croppedHeight; ++j) {
         for (int i = 0; i < croppedWidth; ++i) {
             for (int c = 0; c < channels; ++c) {
-                // Get pixel value from original image
+                
                 unsigned char pixelValue = img.getPixel(x + i, y + j, c);
-                // Set pixel value in cropped image
+                
                 croppedImage.setPixel(i, j, c, pixelValue);
             }
         }
     }
 
-    // Replace the original image with the cropped image
+    
     img = croppedImage;
 
   cout << "Image cropped successfully.\n";
 }
 
 
-// Function to resize the image based on new dimensions or scaling ratio
+
 void ResizeImage(unsigned char*& imageData, int& width, int& height, int channels) {
     int newWidth, newHeight;
     float ratio;
@@ -355,14 +357,14 @@ void ResizeImage(unsigned char*& imageData, int& width, int& height, int channel
    cout << "Enter the new height of the image: ";
     cin >> newHeight;
 
-    // Calculate scaling ratios for width and height
+    
     float widthRatio = static_cast<float>(newWidth) / width;
     float heightRatio = static_cast<float>(newHeight) / height;
 
-    // Create a temporary buffer for resized image data
+    
     unsigned char* resizedImageData = new unsigned char[newWidth * newHeight * channels];
 
-    // Perform resizing operation
+    
     for (int y = 0; y < newHeight; ++y) {
         for (int x = 0; x < newWidth; ++x) {
             int sourceX = static_cast<int>(x / widthRatio);
@@ -375,7 +377,7 @@ void ResizeImage(unsigned char*& imageData, int& width, int& height, int channel
         }
     }
 
-    // Update the image dimensions and replace the image data
+    
     width = newWidth;
     height = newHeight;
     delete[] imageData;
@@ -609,14 +611,3 @@ if (choice >= 1 && choice <= 12 && img.imageData != nullptr) {
 
     return 0; 
 }
-
-
-
-
-
-
-
-
-
-
-
